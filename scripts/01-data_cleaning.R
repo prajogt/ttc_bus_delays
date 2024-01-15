@@ -45,11 +45,12 @@ cleaned_ttc_delay_data <- cleaned_ttc_delay_data |>
         "General Delay" ~ "General",
         "Road Blocked - NON-TTC Collision" ~ "Diversion",
         "Held By" ~ "Other",
-        "Vision" ~ "Bus Issue"
+        "Vision" ~ "Safety"
       )
   )
 
 # save data
-write_csv(ttc_bus_delay_statistics, 'output/data/cleaned_ttc_bus_delay_statistics.csv')
+write_csv(cleaned_ttc_delay_data, 'output/data/cleaned_ttc_bus_delay_statistics.csv')
+
 
 
