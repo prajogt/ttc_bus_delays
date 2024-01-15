@@ -1,0 +1,105 @@
+---
+title: "TTC Bus Delays"
+author: "Timothius Prajogi"
+date: today
+format: html
+bibliography: bibliography.bib
+---
+
+## Packages
+- Base R [@citeR]
+- Core `tidyverse` [@citetidyverse]
+  - `dplyr` [@citedplyr]
+  - `ggplot2` [@citeggplot]
+- `janitor` [@citejanitor]
+- `knitr` [@citeknitr]
+- `opendatatoronto` [@citeopendatatoronto]
+
+```{r}
+#| message: false
+#| warning: false
+
+library("janitor")
+library("knitr")
+library("opendatatoronto")
+library("tidyverse")
+```
+
+## The Data
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+
+
+ttc_delay_data <- 
+  read_csv(
+    file = "../data/cleaned_ttc_bus_delay_statistics.csv",
+    show_col_types = FALSE
+  )
+
+```
+
+
+The cleaned dataset that we are working with:
+
+```{r}
+ttc_delay_data
+```
+
+## Graphs
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| label: fig-delays
+#| fig-cap: The staistics for the TTC in 2023.
+
+ttc_delay_data |>
+  ggplot(aes(x = incident)) + 
+  geom_bar(stat = "count") +
+  ggtitle("Amount of delays caused by incidents") + 
+  xlab("Incident type") +
+  ylab("Delay count")
+
+
+```
+
+We can see from @fig-delays that most of the delays were caused by bus issues. 
+This includes of categories such as issues with the bus operator and mechanical
+issues with the bus itself. 
+
+The second most common cause of delays are safety issues, which covers sanitary
+concerns, police and fire emergencies, and security issues like track
+trespassing.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| label: fig-time
+#| fig-cap: The staistics for the TTC in 2023.
+
+
+ttc_delay_data |>
+  ggplot(aes(x = time)) +
+  geom_line(stat = "count") + 
+  ggtitle("Amount of delays as a function of time") + 
+  xlab("Time of delay") +
+  ylab("Delay count") +
+  scale_x_time(breaks = scales::pretty_breaks(n = 12))
+
+
+```
+
+We can see from @fig-time that during non-peak operating hours are also the times
+for non-peak delay times. As less buses run, understandably less delays occur.
+
+Most of the delays occur during rush hour from around 4p.m. to 6p.m.. From 
+@fig-delay we know that since most delays are caused by issues with the bus 
+and/or the operator itself, meaning it is not because scheduling more 
+buses at any time is more difficult, but just that there is a larger amount of
+buses something could go wrong with. 
